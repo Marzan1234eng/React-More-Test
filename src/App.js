@@ -1,13 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
+import {useEffect, useState} from "react";
 
 function App() {
 
-    /*const shopJson(){
+    const [shopKepper, setShopkepper] = useState([])
+    useEffect( () =>{
+        fetch("https://jsonplaceholder.typicode.com/users")
+            .then(response => response.json())
+            .then(data => setShopkepper(data))
+    },[])
 
-    }*/
-
-    const shopKepperDetails = [
+    /*const shopKepperDetails = [
         {
             name: "Arnald Bajigar",
             position: "Manager",
@@ -23,13 +27,14 @@ function App() {
             position: "Executive",
             salary: "$3500"
         }
-    ];
+    ];*/
   return (
     <div className="App">
       <header className="App-header">
           {
-              shopKepperDetails.map(data => <Shop name={data.name} position={data.position}
-                                                  salary={data.salary}></Shop>)
+              shopKepper.map(data =>
+                  <Shop name={data.name} email={data.email} phone={data.phone}>
+                  </Shop>)
           }
         <img src={logo} className="App-logo" alt="logo" />
       </header>
@@ -46,12 +51,12 @@ function Shop(props){
         height: "200px",
         padding: "10px"
     }
-    const {name, position, salary} = props;
+    const {name, email, phone} = props;
     return(
         <div style={style}>
             <h4>{name}</h4>
-            <h5>Position is {position}</h5>
-            <h5>Salary is {salary}</h5>
+            <h5>Email: {email}</h5>
+            <h5>Phone: {phone}</h5>
         </div>
     )
 
