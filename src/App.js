@@ -4,13 +4,6 @@ import {useEffect, useState} from "react";
 
 function App() {
 
-    const [shopKepper, setShopkepper] = useState([])
-    useEffect( () =>{
-        fetch("https://jsonplaceholder.typicode.com/users")
-            .then(response => response.json())
-            .then(data => setShopkepper(data))
-    },[])
-
     /*const shopKepperDetails = [
         {
             name: "Arnald Bajigar",
@@ -28,18 +21,49 @@ function App() {
             salary: "$3500"
         }
     ];*/
+
+    const [shopKepper, setShopkepper] = useState([])
+    useEffect( () =>{
+        fetch("https://jsonplaceholder.typicode.com/users")
+            .then(response => response.json())
+            .then(data => setShopkepper(data.slice(0,5)))
+    },[])
+
+    const [comments, setComments] = useState([]);
+    useEffect( () => {
+        fetch("https://jsonplaceholder.typicode.com/comments")
+            .then(response => response.json())
+            .then(data => setComments(data.slice(0,5)))
+    },[])
+
   return (
     <div className="App">
+        {
+            comments.map( data =>
+                <Comments body={data.body} id={data.id}>
+
+                </Comments>
+            )
+        }
       <header className="App-header">
           {
               shopKepper.map(data =>
-                  <Shop name={data.name} email={data.email} phone={data.phone}>
+                  <Shop name={data.name} email={data.email} id={data.id} phone={data.phone}>
                   </Shop>)
           }
         <img src={logo} className="App-logo" alt="logo" />
       </header>
     </div>
   );
+}
+
+function Comments(props){
+    const {body,id} = props;
+    return(
+        <div>
+            <p>{id}. Comments {body}</p>
+        </div>
+    )
 }
 
 function Shop(props){
